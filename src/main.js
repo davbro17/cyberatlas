@@ -107,7 +107,7 @@ import router from "./router";
 
 import LoadScript from "vue-plugin-load-script";
 Vue.use(LoadScript);
-Vue.loadScript("mxClient.min.js");
+//Vue.loadScript("mxClient.min.js");
 
 new Vue({
   router,

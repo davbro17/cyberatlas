@@ -114,7 +114,7 @@ export default {
       configOpen: true,
       dataOpen: true,
       myWorker: null,
-      output: "",
+      output: " ",
       previewLoading: false,
       generateLoading: false
     };

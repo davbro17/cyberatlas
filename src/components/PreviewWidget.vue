@@ -11,10 +11,11 @@
         <span> {{ option }} </span>
       </b-radio-button>
     </b-field>
-    <!-- DRAWIO IFRAME -->
+    <!-- DRAWIO IFRAME 
     <div class="iframe-container" v-show="selected === options[0]">
       <iframe ref="preview" src="./drawio/index.html" allowfullscreen />
-    </div>
+    </div> -->
+    <diagram-widget v-show="selected === options[0]" :xml="input" />
     <textarea
       v-if="selected === options[1]"
       v-model="input"
@@ -31,6 +32,8 @@
 </template>
 
 <script>
+import DiagramWidget from "./DiagramWidget.vue";
+
 export default {
   props: {
     input: String,
@@ -44,14 +47,17 @@ export default {
       configurations: "{}"
     };
   },
+  components: {
+    DiagramWidget
+  },
   watch: {
     input() {
-      this.iframe.createGraph(this.input);
+      //this.iframe.createGraph(this.input);
       this.configurations = JSON.stringify(this.configs);
     }
   },
   mounted: function() {
-    this.iframe = this.$refs.preview.contentWindow;
+    //this.iframe = this.$refs.preview.contentWindow;
   }
 };
 </script>

@@ -204,6 +204,13 @@
         config="device.style.shape"
         :defaults.sync="defaults"
       />
+      <b-field>
+        <diagram-widget
+          :xml="getXML"
+          :width="self.device.width.toString() + 'px'"
+          :height="self.device.height.toString() + 'px'"
+        />
+      </b-field>
       <device-stencil v-model="self.device.style.shape" />
       <div class="field is-horizontal">
         <div class="field-label is-normal">
@@ -374,6 +381,7 @@ import ConfigTitle from "../templates/ConfigTitle.vue";
 import ColorSelect from "../templates/ColorSelect.vue";
 import BorderColor from "../templates/BorderColor.vue";
 import DeviceStencil from "../templates/DeviceStencil.vue";
+import DiagramWidget from "../DiagramWidget.vue";
 
 export default {
   props: {
@@ -436,7 +444,23 @@ export default {
     ConfigTitle,
     BorderColor,
     ColorSelect,
-    DeviceStencil
+    DeviceStencil,
+    DiagramWidget
+  },
+  computed: {
+    getXML() {
+      return (
+        '<mxGraphModel dx="80" dy="80"><root><mxCell id="0"/><mxCell id="1" parent="0" style="fillColor=' +
+        this.self.device.background.fillColor +
+        ";strokeColor=" +
+        this.self.device.background.strokeColor +
+        ';" vertex="1"><mxGeometry x="0" y="0" width="70" height="70" as="geometry"/></mxCell>' +
+        '<mxCell id="2" style="shape=' +
+        this.self.device.style.shape +
+        ';" parent="0" vertex="1"><mxGeometry x="0" y="0" width="70" height="70" as="geometry"/></mxCell>' +
+        "</root></mxGraphModel>"
+      );
+    }
   },
   mounted() {
     if (!this.self.lines) {

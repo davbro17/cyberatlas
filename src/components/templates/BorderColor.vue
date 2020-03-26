@@ -22,6 +22,7 @@
     </b-field>
     <button
       class="button is-text"
+      @click="$refs.colorInput.click()"
       :style="[
         selected === 'none'
           ? { 'border-color': 'none' }
@@ -36,8 +37,15 @@
         rounded ? {} : { 'border-radius': '0px' }
       ]"
     >
-      Example
+      Click Me
     </button>
+    <input
+      type="color"
+      ref="colorInput"
+      v-model="custom"
+      @input="customColor"
+      v-show="false"
+    />
   </b-field>
 </template>
 <script>

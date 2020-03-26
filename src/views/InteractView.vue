@@ -7,7 +7,7 @@
         Generate An Interactive Map
       </template>
       <template #content>
-        <diagram-widget />
+        <diagram-widget interactive />
       </template>
     </PanelBlock>
   </div>
