@@ -61,92 +61,108 @@
             :key="element.id"
           >
             <!-- Step Selector Checkbox -->
-            <b-field>
+            <b-field grouped>
               <b-checkbox
                 type="is-info"
-                style="vertical-align:middle"
+                style="align-items:center"
                 v-model="element.checked"
               />
-            </b-field>
-            <div class="field has-addons">
-              <div class="control">
-                <button class="button is-dark is-outlined">
-                  <b-icon icon="bars" class="handle" />
-                </button>
-              </div>
-              <!-- Operation Dropdown -->
-              <div class="control">
-                <div class="select is-info">
-                  <select v-model="element.op">
-                    <option v-for="op in operations" :key="op" :value="op">
-                      {{ op }}
-                    </option>
-                  </select>
+              <div class="field has-addons">
+                <div class="control">
+                  <button class="button is-dark is-outlined">
+                    <b-icon icon="bars" class="handle" />
+                  </button>
+                </div>
+                <!-- Operation Dropdown -->
+                <div class="control">
+                  <div class="select is-info">
+                    <select v-model="element.op">
+                      <option v-for="op in operations" :key="op" :value="op">
+                        {{ op }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Input 1 Dropdown -->
+                <b-dropdown v-model="element.inputA" multiple class="control">
+                  <button
+                    class="button is-active is-info is-outlined"
+                    style="pointerEvents:none; color: black;"
+                    type="button"
+                    slot="trigger"
+                  >
+                    <span
+                      >{{
+                        "Input A (" + element.inputA.length.toString() + ")"
+                      }}
+                    </span>
+                    <b-icon
+                      icon="chevron-down"
+                      size="is-small"
+                      type="is-info"
+                    />
+                  </button>
+                  <b-dropdown-item value="input1"> Ips.csv</b-dropdown-item>
+                  <b-dropdown-item value="input2"> PPI.csv</b-dropdown-item>
+                </b-dropdown>
+                <!-- Input 2 Dropdown -->
+                <b-dropdown
+                  v-model="element.inputB"
+                  multiple
+                  class="control"
+                  style="margin-left:0px;"
+                >
+                  <button
+                    class="button is-active is-info is-outlined"
+                    style="pointerEvents:none; color: black;"
+                    type="button"
+                    slot="trigger"
+                  >
+                    <span
+                      >{{
+                        "Input B (" + element.inputB.length.toString() + ")"
+                      }}
+                    </span>
+                    <b-icon
+                      icon="chevron-down"
+                      size="is-small"
+                      type="is-info"
+                    />
+                  </button>
+                  <b-dropdown-item value="input1"> Ips.csv</b-dropdown-item>
+                  <b-dropdown-item value="input2"> PPI.csv</b-dropdown-item>
+                </b-dropdown>
+                <!-- Configurations Dropdown -->
+                <b-dropdown multiple class="control" style="margin-left:0px;">
+                  <button
+                    class="button is-active is-info is-outlined"
+                    style="pointerEvents:none; color: black;"
+                    type="button"
+                    slot="trigger"
+                  >
+                    <span>Configurations</span>
+                    <b-icon
+                      icon="chevron-down"
+                      size="is-small"
+                      type="is-info"
+                    />
+                  </button>
+                  <b-dropdown-item> configs1.csv</b-dropdown-item>
+                  <b-dropdown-item> configs2.csv</b-dropdown-item>
+                </b-dropdown>
+                <div class="control">
+                  <a
+                    class="button is-active is-info is-outlined"
+                    style="pointerEvents:none; color: black;"
+                  >
+                    Output Name:
+                  </a>
+                </div>
+                <div class="control">
+                  <input class="input is-info" v-model="element.name" />
                 </div>
               </div>
-              <!-- Input 1 Dropdown -->
-              <b-dropdown v-model="element.inputA" multiple class="control">
-                <button
-                  class="button is-active is-info is-outlined"
-                  style="pointerEvents:none; color: black;"
-                  type="button"
-                  slot="trigger"
-                >
-                  <span
-                    >{{ "Input A (" + element.inputA.length.toString() + ")" }}
-                  </span>
-                  <b-icon icon="chevron-down" size="is-small" type="is-info" />
-                </button>
-                <b-dropdown-item value="input1"> Ips.csv</b-dropdown-item>
-                <b-dropdown-item value="input2"> PPI.csv</b-dropdown-item>
-              </b-dropdown>
-              <!-- Input 2 Dropdown -->
-              <b-dropdown
-                v-model="element.inputB"
-                multiple
-                class="control"
-                style="margin-left:0px;"
-              >
-                <button
-                  class="button is-active is-info is-outlined"
-                  style="pointerEvents:none; color: black;"
-                  type="button"
-                  slot="trigger"
-                >
-                  <span
-                    >{{ "Input B (" + element.inputB.length.toString() + ")" }}
-                  </span>
-                  <b-icon icon="chevron-down" size="is-small" type="is-info" />
-                </button>
-                <b-dropdown-item value="input1"> Ips.csv</b-dropdown-item>
-                <b-dropdown-item value="input2"> PPI.csv</b-dropdown-item>
-              </b-dropdown>
-              <!-- Configurations Dropdown -->
-              <b-dropdown multiple class="control" style="margin-left:0px;">
-                <button
-                  class="button is-active is-info is-outlined"
-                  style="pointerEvents:none; color: black;"
-                  type="button"
-                  slot="trigger"
-                >
-                  <span>Configurations</span>
-                  <b-icon icon="chevron-down" size="is-small" type="is-info" />
-                </button>
-                <b-dropdown-item> configs1.csv</b-dropdown-item>
-                <b-dropdown-item> configs2.csv</b-dropdown-item>
-              </b-dropdown>
-              <div class="control">
-                <a
-                  class="button is-active is-info is-outlined"
-                  style="pointerEvents:none; color: black;"
-                >
-                  Output Name:
-                </a>
-              </div>
-              <div class="control">
-                <input class="input is-info" v-model="element.name" />
-              </div>
-            </div>
+            </b-field>
           </div>
         </draggable>
       </template>

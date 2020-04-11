@@ -6,6 +6,7 @@ let subnetConfig = {
   component: "SubnetConfig",
   connections: [],
   commands: [],
+  classifiers: {},
   singleton: false,
   conditionalRender: false,
   style: {

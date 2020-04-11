@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Map from "../views/MapView.vue";
 
 Vue.use(VueRouter);
 
@@ -8,7 +7,8 @@ const routes = [
   {
     path: "/",
     name: "Map",
-    component: Map
+    component: () =>
+      import(/* webpackChunkName: "extract" */ "../views/MapView.vue")
   },
   {
     path: "/Extract",

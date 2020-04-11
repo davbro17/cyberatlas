@@ -155,8 +155,8 @@
         </div>
         <slot name="layout"> </slot>
       </b-tab-item>
-      <!-- Layout Tab -->
-      <b-tab-item label="Connections" icon="exchange-alt"> </b-tab-item>
+      <!-- Links Tab -->
+      <b-tab-item label="Links" icon="exchange-alt"> </b-tab-item>
     </b-tabs>
   </div>
 </template>
@@ -184,5 +184,9 @@ export default {
 <style lang="scss" scoped>
 ::v-deep .tabs li.is-active a {
   color: #167df0;
+}
+::v-deep .tab-content {
+  padding-left: 0rem;
+  padding-right: 0rem;
 }
 </style>

@@ -60,6 +60,9 @@ export default {
     isOpen() {
       // Check if the panel is Open, yes -> emit "opened" event, else emit "closed" event
       this.$emit("toggle", this.isOpen);
+    },
+    Open() {
+      this.isOpen = this.Open;
     }
   },
   mounted() {

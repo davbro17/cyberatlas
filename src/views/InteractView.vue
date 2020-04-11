@@ -2,12 +2,21 @@
   <!-- Main Application -->
   <div class="columns is-multiline add-space">
     <!-- Data Widget -->
-    <PanelBlock>
+    <PanelBlock
+      widthClass="is-three-quarters"
+      :Open="panelOpen"
+      @toggle="bool => (panelOpen = bool)"
+    >
       <template #title>
         Generate An Interactive Map
       </template>
       <template #content>
-        <diagram-widget interactive />
+        <diagram-widget :xml="map.xml" :interactive="interactive" />
+      </template>
+    </PanelBlock>
+    <PanelBlock widthClass="is-one-quarter">
+      <template #title>
+        Device Data
       </template>
     </PanelBlock>
   </div>
@@ -20,6 +29,27 @@ export default {
   components: {
     PanelBlock,
     DiagramWidget
+  },
+  data() {
+    return {
+      interactive: true,
+      panelOpen: true
+    };
+  },
+  props: {
+    actions: {
+      type: Object,
+      default() {
+        return {};
+      }
+    },
+    map: {
+      type: Object,
+      required: true
+    }
+  },
+  mounted() {
+    window.scrollTo(0, 0);
   }
 };
 </script>

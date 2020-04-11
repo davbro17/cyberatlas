@@ -34,7 +34,7 @@
         fillColor === 'none'
           ? { 'background-color': '#ffffff' }
           : { 'background-color': fillColor },
-        rounded ? {} : { 'border-radius': '0px' }
+        rounded == 1 ? { 'border-radius': '4px' } : { 'border-radius': '0px' }
       ]"
     >
       Click Me

@@ -7,6 +7,7 @@
       clearable
       @input="updateStencil"
       width="100%"
+      open-on-focus
     >
       <template slot="empty">No results found</template>
     </b-autocomplete>

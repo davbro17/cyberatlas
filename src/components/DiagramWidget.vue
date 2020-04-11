@@ -2,7 +2,11 @@
   <div
     class="graph_container"
     ref="graph_container"
-    :style="[centered ? { margin: 'auto' } : { margin: '0px' }, styleObj]"
+    :style="{
+      margin: centered ? 'auto' : '0px',
+      width: this.width,
+      height: this.height
+    }"
   />
 </template>
 
@@ -13,7 +17,8 @@ import {
   mxUtils,
   mxConstants,
   mxStencilRegistry,
-  mxStencil
+  mxStencil,
+  mxEvent
 } from "mxgraph/javascript/mxClient.js";
 
 export default {
@@ -33,15 +38,8 @@ export default {
     height: {
       type: String,
       default: "auto"
-    }
-  },
-  data() {
-    return {
-      styleObj: {
-        width: this.width,
-        height: this.height
-      }
-    };
+    },
+    hide: Boolean
   },
   methods: {
     init() {
@@ -85,6 +83,15 @@ export default {
       const codec = new mxCodec(doc);
       codec.decode(doc.documentElement, graph.getModel());
       //graph.fit();
+      // Installs a handler for double click events in the graph
+      // that shows an alert box
+      graph.addListener(mxEvent.DOUBLE_CLICK, function(sender, evt) {
+        var cell = evt.getProperty("cell");
+        mxUtils.alert(
+          "Doubleclick: " + (cell != null ? "Cell" + cell.id : "Graph")
+        );
+        evt.consume();
+      });
     }
   },
   mounted() {
@@ -106,19 +113,24 @@ export default {
       const doc = mxUtils.parseXml(xml);
       const codec = new mxCodec(doc);
       codec.decode(doc.documentElement, this.graph.getModel());
+    },
+    interactive() {
+      // eslint-disable-next-line no-console
+      console.log("CHANGE");
+      this.graph.setEnabled(this.interactive);
+      this.graph.setCellsLocked();
     }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 .graph_container {
   border: 0;
   left: 0;
   position: relative;
   top: 0;
   margin: auto;
-  z-index: 9999;
 }
 </style>

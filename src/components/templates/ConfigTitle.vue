@@ -1,5 +1,5 @@
 <template>
-  <b-field grouped>
+  <b-field grouped style="margin-bottom:0.75em">
     <b-checkbox
       type="is-info"
       v-if="defaults && initialized"

@@ -54,6 +54,31 @@
               />
             </a>
           </div>
+          <div class="level-item">
+            <strong>in</strong>
+          </div>
+          <div class="level-item" @click.stop>
+            <span>
+              <b-dropdown aria-role="list" v-model="settings.selected">
+                <button class="button is-info is-outlined" slot="trigger">
+                  <span
+                    ><strong>{{ settings.selected }}</strong>
+                  </span>
+                  <b-icon icon="caret-down"></b-icon>
+                </button>
+                <b-dropdown-item
+                  aria-role="listitem"
+                  v-for="(item, index) in settings.openWithOptions.filter(
+                    (e, i) => e != settings.selected
+                  )"
+                  :key="index"
+                  :value="item"
+                >
+                  {{ item }}
+                </b-dropdown-item>
+              </b-dropdown>
+            </span>
+          </div>
         </template>
         <template #content>
           <!-- Loading Data -->
@@ -82,11 +107,13 @@ export default {
         return {};
       }
     },
-    transfer: {
+    input1: {
       type: Object,
-      default() {
-        return {};
-      }
+      required: true
+    },
+    map: {
+      type: Object,
+      required: true
     }
   },
   components: {
@@ -101,7 +128,9 @@ export default {
         configs: [],
         defaults: options,
         tracker: {},
-        layout: defaultLayout
+        layout: defaultLayout,
+        openWithOptions: ["Editor", "Interact"],
+        selected: "Editor"
       },
       data: {
         sheets: [],
@@ -114,7 +143,7 @@ export default {
       configOpen: true,
       dataOpen: true,
       myWorker: null,
-      output: " ",
+      output: this.map.xml,
       previewLoading: false,
       generateLoading: false
     };
@@ -126,19 +155,28 @@ export default {
       this.generateLoading = true;
       this.myWorker.postMessage([this.settings, this.data, "generate"]);
     },
+    // @vuese
+    // Receive result XML from Web Worker and update GUI
     receiveXML(result) {
+      this.output = result.data[1];
+      this.$set(this.map, "xml", result.data[1]);
       if (result.data[0] === "preview") {
         this.previewLoading = false;
-        this.output = result.data[1];
       } else {
         this.generateLoading = false;
-        let win = window.open("./drawio/index.html");
-        win.onload = function() {
-          win.createGraph(result.data[1]);
-          win.edit();
-        };
+        if (this.settings.selected === "Editor") {
+          let win = window.open("./drawio/index.html");
+          win.onload = function() {
+            win.createGraph(result.data[1]);
+            win.edit();
+          };
+        } else {
+          this.actions.openWith("Interact");
+        }
       }
     },
+    // @vuese
+    // Launch Preview Action in Web Worker
     preview() {
       /*eslint no-console: ["error", {"allow": ["log"]}] */
       this.previewLoading = true;
@@ -152,23 +190,6 @@ export default {
     }
   },
   mounted() {
-    if (this.transfer.input1 != null) {
-      let data = this.data;
-      let input = this.transfer.input1;
-      this.$set(data, "sheets", input.sheets);
-      this.$set(data, "headers", input.headers);
-      this.$set(data, "customHeaders", input.customHeaders);
-      this.$set(data, "sheetIndex", input.sheetIndex);
-      this.$set(data, "files", input.files);
-      this.$set(data, "fileName", input.fileName);
-      // Delete the old references to the transferred data
-      this.$set(this.transfer, "input1", null);
-    }
-    // Double check for unintended data transfers
-    if ("input2" in this.transfer) {
-      // Delete the data
-      this.$set(this.transfer, "input2", null);
-    }
     window.scrollTo(0, 0);
   },
   beforeDestroy() {

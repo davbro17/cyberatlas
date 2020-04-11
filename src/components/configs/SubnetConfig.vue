@@ -17,79 +17,47 @@
           />
         </div>
       </div>
+      <hr />
+      <!-- SINGLETON: Conditional Render -->
       <div v-if="self.singleton">
         <config-title
-          :label="'Conditional Render'"
+          label="Conditional Render"
           config="commands"
           :defaults.sync="defaults"
         >
           <template #extra>
-            <b-checkbox
-              v-if="self.singleton"
-              type="is-info"
-              v-model="self.conditionalRender"
-            />
+            <div class="buttons is-grouped">
+              <button class="button is-info is-outlined" @click="addCommand">
+                <b-icon icon="plus" />
+                <span> Add </span>
+              </button>
+              <button class="button is-danger is-outlined" @click="addCommand">
+                <b-icon icon="times" />
+                <span> Remove </span>
+              </button>
+            </div>
           </template>
         </config-title>
       </div>
-      <div v-if="!self.singleton">
+      <div v-else>
         <config-title
-          :label="'Network Devices'"
+          label="Network Devices"
           config="commands"
           :defaults.sync="defaults"
-        />
-      </div>
-      <div class="field has-addons">
-        <div class="control">
-          <div class="select is-info">
-            <select v-model="command.action">
-              <option value="Filter">Filter</option>
-              <option v-if="!self.singleton" value="Exclude">Exclude</option>
-              <option v-if="!self.singleton" value="Create">Create</option>
-            </select>
-          </div>
-        </div>
-        <div class="control">
-          <input
-            class="input is-info"
-            type="text"
-            placeholder="192.168.0.0/24"
-            v-model="command.cidr"
-          />
-        </div>
-        <div class="control">
-          <a class="button is-active">
-            From
-          </a>
-        </div>
-        <b-field>
-          <b-autocomplete
-            placeholder="Sheet"
-            open-on-focus
-            v-model="command.sheet"
-            :disabled="command.action !== 'Filter'"
-            :data="data.files"
-          />
-        </b-field>
-        <b-field>
-          <b-autocomplete
-            placeholder="Column"
-            open-on-focus
-            :data="
-              data.customHeaders[data.sheetIndex] &&
-              data.customHeaders[data.sheetIndex].length
-                ? data.customHeaders[data.sheetIndex]
-                : data.headers
-            "
-            v-model="command.column"
-            :disabled="command.action !== 'Filter'"
-          />
-        </b-field>
-        <div class="control">
-          <button class="button is-info is-outlined" @click="addCommand">
-            <b-icon icon="plus" />
-          </button>
-        </div>
+        >
+          <template #extra>
+            <div class="buttons is-grouped">
+              <button class="button is-info is-outlined" @click="addCommand">
+                <b-icon icon="plus" />
+                <span> Add </span>
+              </button>
+              <button class="button is-danger is-outlined" @click="addCommand">
+                <b-icon icon="times" />
+                <span> Remove </span>
+              </button>
+            </div>
+          </template>
+        </config-title>
       </div>
       <div
         class="field has-addons"
@@ -109,7 +77,7 @@
           <input
             class="input is-info"
             type="text"
-            placeholder="192.168.0.0/24"
+            :placeholder="self.singleton ? '192.168.0.1' : '192.168.0.0/24'"
             v-model="self.commands[index].cidr"
           />
         </div>
@@ -155,12 +123,157 @@
           <b-checkbox type="is-info" v-model="self.renderEmpty" />
         </template>
       </config-title>
+      <hr />
+      <!-- Classifiers -->
       <config-title
-        label="Device Label"
-        config="lines"
+        label="Classifiers"
+        config="classifiers"
         :defaults.sync="defaults"
-      />
-      <TextEditor :self.sync="self" :data.sync="data" />
+      >
+        <template #extra>
+          <div class="buttons is-grouped">
+            <button class="button is-info is-outlined" @click="addCommand">
+              <b-icon icon="plus" />
+              <span> Add </span>
+            </button>
+            <button class="button is-danger is-outlined" @click="addCommand">
+              <b-icon icon="times" />
+              <span> Remove </span>
+            </button>
+          </div>
+        </template>
+      </config-title>
+      <b-field grouped>
+        <b-checkbox
+          type="is-info"
+          :style="
+            classifierOpen
+              ? {
+                  'vertical-align': 'top',
+                  'align-items': 'normal',
+                  'padding-top': '1.25em'
+                }
+              : {
+                  'vertical-align': 'middle',
+                  'align-items': 'center',
+                  'padding-top': '0em'
+                }
+          "
+        />
+        <div class="card" style="width:100%">
+          <div class="card-header" @click="classifierOpen = !classifierOpen">
+            <a class="card-header-title">
+              <div class="control" @click.stop>
+                <input class="input" />
+              </div>
+            </a>
+            <a class="card-header-icon has-text-black">
+              <button
+                v-if="classifierOpen"
+                class="button is-info is-outlined is-small"
+                style="margin-right:10px"
+                @click.stop
+              >
+                <b-icon icon="plus" />
+              </button>
+              <button
+                v-if="classifierOpen"
+                class="button is-danger is-outlined is-small"
+                style="margin-right:10px"
+                @click.stop
+              >
+                <b-icon icon="times" />
+              </button>
+              <button
+                v-if="classifierOpen"
+                class="button is-dark is-outlined is-small"
+                style="margin-right:10px"
+                @click.stop
+              >
+                <b-icon icon="arrows-alt" />
+              </button>
+              Conditions
+              <b-icon
+                type="is-dark"
+                :icon="classifierOpen ? 'angle-down' : 'angle-up'"
+                style="padding-left:10px"
+              >
+              </b-icon>
+            </a>
+          </div>
+          <div class="card-content" v-if="classifierOpen">
+            <div
+              style="margin-right:0px"
+              class="field has-addons"
+              v-for="(command, index) in self.commands"
+              v-bind:key="index"
+            >
+              <div class="control" style="padding-top:0.25em; margin-left:-0.5em;margin-right:0.5em;">
+                <b-icon icon="th" size="is-small" style="vertical-align:middle" />
+              </div>
+              
+              <div class="control">
+                <a class="button is-dark is-outlined">
+                  <b-icon icon="angle-double-down" />
+                  <span>1</span>
+                </a>
+              </div>
+              <div class="control">
+                <div class="select is-info">
+                  <select>
+                    <option>Value</option>
+                    <option value="Row">Row</option>
+                    <option value="Header">Header</option>
+                    <option value="Sheet">Sheet</option>
+                    <option value="AND">AND</option>
+                    <option value="OR">OR</option>
+                    <option value="NOT">NOT</option>
+                    <option value="NEST">( NEST )</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control">
+                <div class="select is-info">
+                  <select>
+                    <option value="Equals" selected>Equals</option>
+                    <option value="Contains">Contains</option>
+                    <option value="Within">Within</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control">
+                <input
+                  class="input is-info"
+                  type="text"
+                  :placeholder="
+                    self.singleton ? '192.168.0.1' : '192.168.0.0/24'
+                  "
+                  v-model="self.commands[index].cidr"
+                />
+              </div>
+              <div class="control">
+                <div class="select is-info">
+                  <select>
+                    <option value=">" selected>&gt;</option>
+                    <option value="==">==</option>
+                    <option value="<">&lt;</option>
+                    <option value="≥">≥</option>
+                    <option value="≤">≤</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control">
+                <input class="input is-info" type="text" placeholder="1" />
+              </div>
+              <div class="control">
+                <a class="button is-dark is-outlined">
+                  <b-icon icon="angle-down" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </b-field>
     </template>
     <!-- Style Tab -->
     <template #style>
@@ -198,18 +311,34 @@
           >
           </b-switch>
         </div>
+        <hr />
+      </div>
+      <!-- DEVICE STYLE -->
+      <div class="field is-grouped is-grouped-centered">
+        <b-field
+          type="is-info"
+          label="Device:"
+          horizontal=""
+          custom-class="is-medium"
+        >
+          <b-select v-model="device" size="is-medium">
+            <option value="Default"> Default </option>
+            <option v-for="name in self.classifiers" :value="name" :key="name">
+              {{ name }}
+            </option>
+          </b-select>
+        </b-field>
       </div>
       <config-title
         label="Device Image"
         config="device.style.shape"
         :defaults.sync="defaults"
       />
-      <b-field>
-        <diagram-widget
-          :xml="getXML"
-          :width="self.device.width.toString() + 'px'"
-          :height="self.device.height.toString() + 'px'"
-        />
+      <b-field
+        style="max-width:300px; max-height: 300px; overflow:auto"
+        :style="{ height: self.device.height + 1 + 'px' }"
+      >
+        <diagram-widget :xml="getXML" :width="getWidth" :height="getHeight" />
       </b-field>
       <device-stencil v-model="self.device.style.shape" />
       <div class="field is-horizontal">
@@ -262,6 +391,13 @@
         v-model="self.device.background.strokeColor"
         rounded
       />
+      <!-- Device Label -->
+      <config-title
+        label="Device Label"
+        config="lines"
+        :defaults.sync="defaults"
+      />
+      <TextEditor :self.sync="self" :data.sync="data" />
     </template>
     <!-- Layout Tab -->
     <template #layout>
@@ -422,7 +558,9 @@ export default {
         sheet: "",
         column: "",
         id: null
-      }
+      },
+      device: "Default",
+      classifierOpen: false
     };
   },
   methods: {
@@ -448,18 +586,38 @@ export default {
     DiagramWidget
   },
   computed: {
+    // @vuese
+    // Creates XML for device preview in Style Tab
     getXML() {
       return (
         '<mxGraphModel dx="80" dy="80"><root><mxCell id="0"/><mxCell id="1" parent="0" style="fillColor=' +
         this.self.device.background.fillColor +
         ";strokeColor=" +
         this.self.device.background.strokeColor +
-        ';" vertex="1"><mxGeometry x="0" y="0" width="70" height="70" as="geometry"/></mxCell>' +
+        ';" vertex="1"><mxGeometry x="0" y="0" width="' +
+        this.self.device.width +
+        '" height="' +
+        this.self.device.height +
+        '" as="geometry"/></mxCell>' +
         '<mxCell id="2" style="shape=' +
         this.self.device.style.shape +
-        ';" parent="0" vertex="1"><mxGeometry x="0" y="0" width="70" height="70" as="geometry"/></mxCell>' +
+        ';" parent="0" vertex="1"><mxGeometry x="0" y="0" width="' +
+        this.self.device.width +
+        '" height="' +
+        this.self.device.height +
+        '" as="geometry"/></mxCell>' +
         "</root></mxGraphModel>"
       );
+    },
+    // @vuese
+    // Get the device width [Number] and return as String with units [px]
+    getWidth() {
+      return this.self.device.width.toString() + "px";
+    },
+    // @vuese
+    // Get the device width [Number] and return as String with units [px]
+    getHeight() {
+      return this.self.device.height.toString() + "px";
     }
   },
   mounted() {

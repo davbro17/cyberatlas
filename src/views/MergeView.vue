@@ -99,29 +99,19 @@ export default {
         return {};
       }
     },
-    transfer: {
+    input1: {
       type: Object,
-      default() {
-        return {};
-      }
+      required: true
+    },
+    input2: {
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
-      excelA: {
-        sheets: [],
-        headers: [],
-        customHeaders: [],
-        sheetIndex: 0,
-        files: []
-      },
-      excelB: {
-        sheets: [],
-        headers: [],
-        customHeaders: [],
-        sheetIndex: 0,
-        files: []
-      },
+      excelA: this.input1,
+      excelB: this.input2,
       output: {
         sheets: [],
         headers: [],
@@ -212,30 +202,6 @@ export default {
   mounted() {
     // Add action to transfer two inputs, instead of just one
     this.$set(this.actions, "transferBothInputs", this.transferData);
-    if (this.transfer.input1 != null) {
-      let data = this.excelA;
-      let input = this.transfer.input1;
-      this.$set(data, "sheets", input.sheets);
-      this.$set(data, "headers", input.headers);
-      this.$set(data, "customHeaders", input.customHeaders);
-      this.$set(data, "sheetIndex", input.sheetIndex);
-      this.$set(data, "files", input.files);
-      this.$set(data, "fileName", input.fileName);
-      // Delete the old references to the transferred data
-      this.$set(this.transfer, "input1", null);
-    }
-    if (this.transfer.input2 != null) {
-      let data = this.excelB;
-      let input = this.transfer.input2;
-      this.$set(data, "sheets", input.sheets);
-      this.$set(data, "headers", input.headers);
-      this.$set(data, "customHeaders", input.customHeaders);
-      this.$set(data, "sheetIndex", input.sheetIndex);
-      this.$set(data, "files", input.files);
-      this.$set(data, "fileName", input.fileName);
-      // Delete the old references to the transferred data
-      this.$set(this.transfer, "input2", null);
-    }
   },
   created() {
     if (window.Worker) {

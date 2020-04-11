@@ -32,7 +32,7 @@
           : selected === 'custom'
           ? { 'background-color': custom }
           : { 'background-color': colors[selected] },
-        rounded ? {} : { 'border-radius': '0px' }
+        rounded == 1 ? { 'border-radius': '4px' } : { 'border-radius': '0px' }
       ]"
     >
       Click Me

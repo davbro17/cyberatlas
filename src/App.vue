@@ -32,7 +32,11 @@
       <div class="navbar-menu" v-bind:class="{ 'is-active': burgerToggle }">
         <div class="navbar-start">
           <div class="navbar-item">
-            <b-dropdown aria-role="list" v-model="selectedApp" @change="route">
+            <b-dropdown
+              aria-role="list"
+              v-model="selectedApp"
+              @change="route"
+            >
               <button class="button is-info" slot="trigger">
                 <span
                   ><strong>{{ $route.name }}</strong>
@@ -57,7 +61,11 @@
           <div class="navbar-item">
             <button
               class="button is-info is-medium"
-              @click="performanceModalActive = true"
+              @click="
+                () => {
+                  performanceModalActive = true;
+                }
+              "
             >
               <strong>
                 Performance
@@ -76,7 +84,11 @@
                 <button
                   class="delete"
                   aria-label="close"
-                  @click="performanceModalActive = false"
+                  @click="
+                    () => {
+                      performanceModalActive = false;
+                    }
+                  "
                 />
               </header>
               <section class="modal-card-body">
@@ -114,7 +126,7 @@
         </div>
       </div>
     </nav>
-    <router-view :transfer="transferData" :actions.sync="actions" />
+    <router-view v-bind.sync="appData" />
     <!-- Footer -->
     <footer class="footer">
       <div class="content has-text-centered">
@@ -137,8 +149,17 @@
     </footer>
   </div>
 </template>
-
 <script>
+const inputObject = () => {
+  return {
+    sheets: [],
+    headers: [],
+    customHeaders: [],
+    sheetIndex: 0,
+    files: []
+  };
+};
+
 export default {
   data() {
     return {
@@ -152,11 +173,14 @@ export default {
         "Automate"
       ],
       burgerToggle: false,
-      actions: {},
-      transferData: {
-        input1: null,
-        input2: null,
-        mapConfigs: null
+      appData: {
+        actions: {},
+        map: {
+          xml: "",
+          interactive: null
+        },
+        input1: inputObject(),
+        input2: inputObject()
       },
       workers: {
         concurrencyMax: 1,
@@ -183,21 +207,13 @@ export default {
     },
     // @vuese
     // Allow tools to transfer data between each other
-    openWith(appName, data) {
-      if ("input1" in data) {
-        this.$set(this.transferData, "input1", data.input1);
-      }
-      if ("input2" in data) {
-        this.$set(this.transferData, "input2", data.input2);
-      }
-      if ("mapConfigs" in data) {
-        this.$set(this.transferData, "mapConfigs", data.mapConfigs);
-      }
+    openWith(appName) {
+      //this.$set(this.actions, "transferData", data);
       this.route(appName);
     }
   },
   mounted() {
-    this.actions["openWith"] = this.openWith;
+    this.appData.actions["openWith"] = this.openWith;
     this.workers.concurrencyMax = parseInt(
       window.navigator.hardwareConcurrency
     );

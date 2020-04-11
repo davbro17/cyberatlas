@@ -1,5 +1,5 @@
 <template>
-  <div class="column is-full">
+  <div class="column is-full" style="overflow:auto; max-height:400px">
     <b-field>
       <b-radio-button
         type="is-info"

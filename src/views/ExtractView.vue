@@ -290,29 +290,19 @@ export default {
         return {};
       }
     },
-    transfer: {
+    input1: {
       type: Object,
-      default() {
-        return {};
-      }
+      required: true
+    },
+    input2: {
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
-      ips: {
-        sheets: [],
-        headers: [],
-        customHeaders: [],
-        sheetIndex: 0,
-        files: []
-      },
-      subnets: {
-        sheets: [],
-        headers: [],
-        customHeaders: [],
-        sheetIndex: 0,
-        files: []
-      },
+      ips: this.input1,
+      subnets: this.input2,
       output: {
         sheets: [],
         headers: [],
@@ -548,30 +538,6 @@ export default {
     this.schema = GenerateSchema.json("Configurations", this.options);
     // Add action to transfer two inputs, instead of just one
     this.$set(this.actions, "transferBothInputs", this.transferData);
-    if (this.transfer.input1 != null) {
-      let data = this.ips;
-      let input = this.transfer.input1;
-      this.$set(data, "sheets", input.sheets);
-      this.$set(data, "headers", input.headers);
-      this.$set(data, "customHeaders", input.customHeaders);
-      this.$set(data, "sheetIndex", input.sheetIndex);
-      this.$set(data, "files", input.files);
-      this.$set(data, "fileName", input.fileName);
-      // Delete the old references to the transferred data
-      this.$set(this.transfer, "input1", null);
-    }
-    if (this.transfer.input2 != null) {
-      let data = this.subnets;
-      let input = this.transfer.input2;
-      this.$set(data, "sheets", input.sheets);
-      this.$set(data, "headers", input.headers);
-      this.$set(data, "customHeaders", input.customHeaders);
-      this.$set(data, "sheetIndex", input.sheetIndex);
-      this.$set(data, "files", input.files);
-      this.$set(data, "fileName", input.fileName);
-      // Delete the old references to the transferred data
-      this.$set(this.transfer, "input2", null);
-    }
   },
   beforeDestroy() {
     this.myWorker.terminate();

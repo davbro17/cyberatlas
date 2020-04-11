@@ -42,7 +42,11 @@ import {
   faBars,
   faRocket,
   faChevronDown,
-  faTrashAlt
+  faTrashAlt,
+  faArrowsAlt,
+  faAngleDoubleDown,
+  faArrowRight,
+  faGripHorizontal,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -86,7 +90,11 @@ library.add(
   faBars,
   faRocket,
   faChevronDown,
-  faTrashAlt
+  faTrashAlt,
+  faArrowsAlt,
+  faAngleDoubleDown,
+  faArrowRight,
+  faGripHorizontal
 );
 Vue.component("vue-fontawesome", FontAwesomeIcon);
 
