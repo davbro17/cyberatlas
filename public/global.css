@@ -1,0 +1,84 @@
+:root {
+	font-size: 16px;
+	font-family: 'Arial';
+	--text-primary: #b6b6b6;
+	--text-secondary: #ececec;
+	--text-main: black;
+	--bg-primary: #23232e;
+	--bg-secondary: #141418;
+	--bg-main: #282c34;
+	--transition-speed: 600ms;
+  }
+
+  html {
+	height: 100%;
+  }
+  
+  body {
+	color: black;
+	background-color: white;
+	margin: 0;
+	padding: 0;
+	height:100%;
+	overflow: hidden;
+  }
+  
+  body::-webkit-scrollbar {
+	display: none;
+  }
+  
+  .fa-primary {
+	
+	color: rgb(74, 163, 223);
+  }
+  
+  .fa-secondary {
+	color: rgb(32, 156, 238);
+  }
+  
+  .fa-primary,
+  .fa-secondary {
+	transition: var(--transition-speed);
+  }
+
+  .dark {
+	--text-primary: #b6b6b6;
+	--text-secondary: #ececec;
+	--text-main: white;
+	--bg-primary: #23232e;
+	--bg-secondary: #141418;
+  }
+  
+  .light {
+	--text-primary: #1f1f1f;
+	--text-secondary: #000000;
+	--text-main: black;
+	--bg-primary: #f3f2f2;
+	--bg-secondary: #e4e4e4;
+	--bg-main: white;
+  }
+  
+  .solar {
+	--text-primary: #576e75;
+	--text-secondary: #35535c;
+	--text-main: black;
+	--bg-primary: #fdf6e3;
+	--bg-secondary: #f5e5b8;
+	--bg-main: #fff;
+  }
+
+  .dark #darkIcon {
+	display: block;
+  }
+  
+  .light #lightIcon {
+	display: block;
+  }
+  
+  .solar #solarIcon {
+	display: block;
+  }
+
+  .theme-icon {
+	display: none;
+  }

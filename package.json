@@ -1,0 +1,50 @@
+{
+  "name": "svelte-app",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "babel-loader": "^8.1.0",
+    "cross-env": "^5.2.0",
+    "css-loader": "^2.1.1",
+    "cypress-svelte-unit-test": "^3.3.1",
+    "fa-svelte": "^3.1.0",
+    "mini-css-extract-plugin": "^0.6.0",
+    "sass": "^1.26.11",
+    "sass-loader": "^10.0.2",
+    "serve": "^11.0.0",
+    "style-loader": "^0.23.1",
+    "svelte": "^3.0.0",
+    "svelte-loader": "2.13.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.3.1"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack",
+    "dev": "webpack-dev-server --content-base public",
+    "cypress:open": "cypress open"
+  },
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fullcalendar/core": "^5.3.1",
+    "@fullcalendar/daygrid": "^5.3.2",
+    "@fullcalendar/interaction": "^5.3.1",
+    "@fullcalendar/list": "^5.3.1",
+    "bulma": "^0.9.1",
+    "crypto-js": "^4.0.0",
+    "dexie": "^3.0.2",
+    "file-selector": "^0.2.3",
+    "html-to-image": "^0.1.1",
+    "lodash.isequal": "^4.5.0",
+    "moment": "^2.29.1",
+    "npx": "^10.2.2",
+    "pptxgenjs": "^3.3.1",
+    "svelte-awesome": "^2.3.0",
+    "svelte-preprocess": "^4.5.1",
+    "tabulator-tables": "^4.8.2",
+    "validate.js": "^0.13.1",
+    "worker-loader": "^3.0.5",
+    "xlsx": "^0.16.8"
+  }
+}
