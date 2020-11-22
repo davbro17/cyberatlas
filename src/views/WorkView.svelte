@@ -2,7 +2,7 @@
 <script>
   import DataTable from "../components/DataTable.svelte";
   import TaskList from "../components/TaskList.svelte";
-  import FullCalendar from "../modules/calendar/fullcalendar.svelte";
+  import FullCalendar from "../modules/calendar/FullCalendar.svelte";
   import {listView} from "../store/AppOptions";
   import SplitPane from "../components/SplitPane.svelte";
   import InputManager from "../modules/input/InputManager.svelte";
