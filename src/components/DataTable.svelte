@@ -2,11 +2,21 @@
   import Tabulator from "tabulator-tables";
   import isEqual from 'lodash.isequal';
   import { onMount } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
 
-  let table, tabulator;
+  const dispatch = createEventDispatcher();
+
+  if(!window.moment){
+    window.moment = require('moment-timezone')
+  }
+  
   export let noBorders = false;
   export let noSorting = false;
   export let dataTree = false;
+  export let selectable = false;
+  export let initialSort;
+
+  let table, tabulator;
 
   var rowMenu = [
   {
@@ -104,6 +114,8 @@
       }
     }
 
+    let doubleClickTimer = Date.now();
+
     onMount(async () => {
       tabulator = new Tabulator(table, {
         data: tableData, //link data to table
@@ -113,12 +125,25 @@
         autoColumns: autoColumns,
         layout:"fitDataStretch",
         maxHeight: "80%",
-        maxWidth: "95%",
         dataTree: dataTree,
+        selectable: selectable,
+        selectableCheck(row){
+          let ret = true;
+          const time = Date.now();
+          const selectedRows = this.getSelectedRows();
+          if(selectedRows.length == 1 && selectedRows[0].getPosition() == row.getPosition()){
+            if(time - doubleClickTimer < 500){
+              dispatch("doubleClick", row);
+            }
+            ret = false;
+          }
+          doubleClickTimer = time;
+          return ret;
+        },
         headerSort: !noSorting,
+        initialSort: initialSort || undefined,
         columns: autoColumns ? [] : tableColumns, //define table columns
         dataChanged: function(data) {
-          console.log(data);
         }
     });
     });
@@ -134,6 +159,7 @@
 
   .tabulator :global(div.tabulator-tableHolder::-webkit-scrollbar){
     width:0.25em;
+    height:0.25em;
     color: rgb(32, 156, 238);
   }
   .tabulator :global(div.tabulator-tableHolder::-webkit-scrollbar-track)

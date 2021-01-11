@@ -1,13 +1,14 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ThreadsPlugin = require('threads-plugin')
 const path = require('path');
+const modules = require('./src/engine/modules.json');
 
 const mode = process.env.NODE_ENV || 'development';
 const prod = mode === 'production';
 
-module.exports = {
+const config = {
 	entry: {
 		bundle: ['./src/main.js'],
-		//present: ['./src/modules/present.js']
 	},
 	resolve: {
 		alias: {
@@ -19,7 +20,7 @@ module.exports = {
 	output: {
 		path: __dirname + '/public',
 		filename: '[name].js',
-		chunkFilename: '[name].[id].js'
+		chunkFilename: '[name].js'
 	},
 	module: {
 		rules: [
@@ -53,7 +54,17 @@ module.exports = {
 	plugins: [
 		new MiniCssExtractPlugin({
 			filename: '[name].css'
-		})
+		}),
+		new ThreadsPlugin()
 	],
-	devtool: prod ? false: 'source-map'
+	devtool: prod ? false: 'source-map',
+	optimization: {
+		runtimeChunk: 'single'
+	}
 };
+
+// modules.forEach(mod => {
+// 	config.entry[mod] = [`./src/modules/${mod}/main.js`];
+// });
+
+module.exports = config;

@@ -65,20 +65,13 @@
 	--bg-primary: #fdf6e3;
 	--bg-secondary: #f5e5b8;
 	--bg-main: #fff;
-  }
+	}
+	
+	.title, .label {
+		color: var(--text-secondary) !important;
+	}
 
-  .dark #darkIcon {
-	display: block;
-  }
-  
-  .light #lightIcon {
-	display: block;
-  }
-  
-  .solar #solarIcon {
-	display: block;
-  }
-
-  .theme-icon {
-	display: none;
-  }
+	.tabulator.is-striped .tabulator-row:nth-child(2n).tabulator-selected{
+		background-color: #00d1b2;
+	}
+	

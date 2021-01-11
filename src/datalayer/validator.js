@@ -13,7 +13,7 @@ validate.extend(validate.validators.datetime, {
       return moment.utc(value).format(format);
     }
 });
-validate.validators.type.types.stringArray = function (value) { return (value instanceof Array) && value.reduce((accum, cv) => accum && typeof cv === "string"); };
-validate.validators.type.types.integerArray = function (value) { return (value instanceof Array) && value.reduce((accum, cv) => accum && Number.isInteger(cv)); };
+validate.validators.type.types.stringArray = function (value) { return (value instanceof Array) && value.reduce((accum, cv) => accum && typeof cv === "string", true); };
+validate.validators.type.types.integerArray = function (value) { return (value instanceof Array) && value.reduce((accum, cv) => accum && Number.isInteger(cv), true); };
 
 export default validate;

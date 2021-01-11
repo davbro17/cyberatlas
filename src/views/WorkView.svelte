@@ -1,16 +1,17 @@
 
 <script>
-  import DataTable from "../components/DataTable.svelte";
-  import TaskList from "../components/TaskList.svelte";
   import FullCalendar from "../modules/calendar/FullCalendar.svelte";
   import {listView} from "../store/AppOptions";
-  import SplitPane from "../components/SplitPane.svelte";
   import InputManager from "../modules/input/InputManager.svelte";
-  import WorkBox from "../components/WorkBox.svelte"
-
   import { writable } from 'svelte/store';
+  import dbInterface from "../datalayer/db";
+  import { onMount } from "svelte";
+  import MultiPane from "../components/MultiPane.svelte";
+  import AutomateView from "./AutomateView.svelte";
+  import BreadCrumb from "../components/BreadCrumb.svelte"
 
-  let textarea;
+  let project, config;
+  let input = writable([]);
 
   export const resizeEvent = writable(false);
 
@@ -18,26 +19,56 @@
     resizeEvent.update(moving => !moving)
   }
 
-  function inputJSON(){
-    console.log(JSON.stringify(textarea.value));
+  function handleNewFile(event){
+    console.log("NEW FILE");
+    project.addInput(event.detail);
+  }
+
+  onMount( async() => {
+    await console.log("mounting");
+    project = await dbInterface.getSession().getProject();
+    if(project.input.length){
+      const files = await dbInterface.getFiles({id: project.input});
+      input.set(Array.isArray(files) ? files : [files]);
+    }
+    await project.initialize();
+    console.log("Printing Config");
+    console.log(project.steps);
+    const tmp = await JSON.parse(JSON.stringify(project.steps[0].panes))
+    await parsePanes(tmp);
+    panes = tmp;
+    console.log(tmp);
+  });
+  
+  const components = {MultiPane, InputManager, FullCalendar};
+  const listeners = {newFile: handleNewFile};
+  const props = {files: input, resizeEvent: resizeEvent, before: BreadCrumb,
+    beforeProps: {crumbs: [["&#128193;Inputs", "&#128208;Config", "&#128640;Output"], "Test", "Hello", "Dave"]}};
+
+  function parsePanes(root){
+    for(const pane of root){
+      pane.component = pane.component ? components[pane.component] : InputManager;
+      pane.percent = pane.percent || 1;
+      pane.listeners = listeners;
+      pane.props = props;
+      if("children" in pane && pane.children instanceof Array){
+        parsePanes(pane.children);
+      }
+    }
   }
 
 
+  let panes = [
+    {component: MultiPane, percent: 1, children: [
+      {component: InputManager, percent: 1, props: {files: input}, listeners: {newFile: handleNewFile}},
+      {component: InputManager, percent: 1, props: {files: input}, listeners: {newFile: handleNewFile}},
+    ]},
+    {component: FullCalendar, percent: 1, props: {resizeEvent: resizeEvent}}
+  ]
 
 </script>
 {#if !$listView}
-  <TaskList/>
+  <AutomateView steps={project.steps || []}/>
 {:else}
-<SplitPane on:resize={resize}>
-  <section slot="paneL">
-    <WorkBox>
-      <InputManager/>
-    </WorkBox>
-  </section>
-  <section slot="paneR">
-    <FullCalendar resizeEvent={resizeEvent}/>
-  </section>
-</SplitPane>
-
-
+<MultiPane on:resize={resize} panes={panes} split={"horizontal"}/>
 {/if}

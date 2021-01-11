@@ -1,4 +1,4 @@
-  <div style={active ? `cursor: ${cursor};userSelect:${userSelect}` : ""} class="vue-splitter-container clearfix" on:mouseup={onMouseUp} on:mousemove={onMouseMove}>
+  <div style={active ? `cursor: ${cursor};userSelect:${userSelect}` : ""} class="svelte-splitter-container clearfix" on:mouseup={onMouseUp} on:mousemove={onMouseMove}>
   
     <div class={`splitter-pane splitter-paneL ${split}`} style={`${type}: ${percent}%`}>
       <slot name="paneL"></slot>
@@ -10,9 +10,8 @@
       <slot name="paneR"></slot>
     </div>
     {#if active}
-      <div class="vue-splitter-container-mask"></div>
+      <div class="svelte-splitter-container-mask"></div>
     {/if}
-    
   </div>
   
 <script>
@@ -56,27 +55,27 @@
       active = false
     }
     if (active) {
-    let offset = 0
-    let target = e.currentTarget
-    if (split === 'vertical') {
-      while (target) {
-      offset += target.offsetLeft
-      target = target.offsetParent
+      let offset = 0
+      let target = e.currentTarget
+      if (split === 'vertical') {
+        while (target) {
+        offset += target.offsetLeft
+        target = target.offsetParent
+        }
+      } else {
+        while (target) {
+        offset += target.offsetTop
+        target = target.offsetParent
+        }
       }
-    } else {
-      while (target) {
-      offset += target.offsetTop
-      target = target.offsetParent
+      const currentPage = split === 'vertical' ? e.pageX : e.pageY
+      const targetOffset = split === 'vertical' ? e.currentTarget.offsetWidth : e.currentTarget.offsetHeight
+      const calcPercent = Math.floor(((currentPage - offset) / targetOffset) * 10000) / 100
+      if (calcPercent > minPercent && calcPercent < 100 - minPercent) {
+        percent = calcPercent
       }
-    }
-    const currentPage = split === 'vertical' ? e.pageX : e.pageY
-    const targetOffset = split === 'vertical' ? e.currentTarget.offsetWidth : e.currentTarget.offsetHeight
-    percent = Math.floor(((currentPage - offset) / targetOffset) * 10000) / 100
-    if (percent > minPercent && percent < 100 - minPercent) {
-      percent = percent
-    }
-    dispatch('resize', {percent: percent})
-    hasMoved = true
+      dispatch('resize', {percent: percent})
+      hasMoved = true
     }
   }
   </script>
@@ -90,11 +89,11 @@
   clear: both;
   height: 0;
   }
-  .vue-splitter-container {
+  .svelte-splitter-container {
   height: 100%;
   position: relative;
   }
-  .vue-splitter-container-mask {
+  .svelte-splitter-container-mask {
   z-index: 9999;
   width: 100%;
   height: 100%;
