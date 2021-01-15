@@ -1,7 +1,7 @@
   <div style={active ? `cursor: ${cursor};userSelect:${userSelect}` : ""} class="svelte-splitter-container clearfix" on:mouseup={onMouseUp} on:mousemove={onMouseMove}>
     {#each panes as p, index}
       <div class="splitter-pane" style={`${p.style || ""}${p.calcStyle || ""}`}>
-        {#if p.props && 'before' in p.props && p.component.name != "MultiPane"}
+        {#if p.props && 'before' in p.props && p.component.name !== "MultiPane"}
           <svelte:component this={p.props.before} {...(p.props.beforeProps || {})}/>
         {/if}
         <svelte:component this={p.component} {...p.props} panes={p.children || []} bind:this={p.instance}/>
