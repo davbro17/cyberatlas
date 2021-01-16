@@ -47,6 +47,7 @@
 
   function parsePanes(root){
     for(const pane of root){
+      pane.name = pane.component ? pane.component : "InputManager";
       pane.component = pane.component ? components[pane.component] : InputManager;
       pane.percent = pane.percent || 1;
       pane.listeners = listeners;
