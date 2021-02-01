@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 // internal icons
+
 import {
   faCheck,
   faCheckCircle,
@@ -110,7 +111,6 @@ import VueVirtualScroller from "vue-virtual-scroller";
 Vue.use(VueVirtualScroller);
 import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 
-import "buefy/dist/buefy.css";
 import router from "./router";
 
 import LoadScript from "vue-plugin-load-script";

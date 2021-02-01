@@ -26,6 +26,7 @@
     <button
       class="button is-text"
       @click="$refs.colorInput.click()"
+      style="color:black;"
       :style="[
         selected === 'none'
           ? { 'background-color': '#ffffff' }

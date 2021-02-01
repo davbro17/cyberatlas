@@ -1,24 +1,41 @@
 <template>
   <div class="column is-full-width">
+    <div class="tabs is-boxed">
+      <ul>
+        <li
+          v-for="(tab, index) in tabs"
+          :class="{ 'is-active': value == index }"
+          :key="index"
+          @click="selectTab(index)"
+        >
+          <a>
+            <b-icon :type="{ 'is-info': value == index }" :icon="tab.icon" />
+            <span>{{ tab.name }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
     <!-- Tabs -->
-    <b-tabs type="is-boxed">
+    <b-tabs type="is-boxed" @input="scrollUp()">
       <!-- Data Tab -->
       <b-tab-item label="Data" icon="filter">
-        <config-title
-          label="Object Name"
-          config="title"
-          :defaults.sync="defaults"
-          force
-        />
-        <div class="field">
-          <input
-            class="input is-info"
-            type="text"
-            :placeholder="self.name"
-            v-model="self.title"
+        <div ref="tabContent" style="max-height:405px;overflow:auto;">
+          <config-title
+            label="Object Name"
+            config="title"
+            :defaults.sync="defaults"
+            force
           />
+          <div class="field">
+            <input
+              class="input is-info"
+              type="text"
+              :placeholder="self.name"
+              v-model="self.title"
+            />
+          </div>
+          <slot name="data" />
         </div>
-        <slot name="data" />
       </b-tab-item>
       <!-- Style Tab -->
       <b-tab-item label="Style" icon="edit">
@@ -164,6 +181,12 @@
 <script>
 import ConfigTitle from "../templates/ConfigTitle.vue";
 
+const tabs = [
+  { name: "Data", icon: "filter" },
+  { name: "Style", icon: "edit" },
+  { name: "Layout", icon: "object-group" },
+  { name: "Links", icon: "exchange-alt" }
+];
 export default {
   props: {
     self: Object,
@@ -172,6 +195,37 @@ export default {
       type: Object,
       default() {
         return null;
+      }
+    },
+    tabs: {
+      type: Array,
+      default() {
+        return tabs;
+      }
+    },
+    value: {
+      type: Number,
+      default: 0
+    }
+  },
+  methods: {
+    scrollUp() {
+      // eslint-disable-next-line no-console
+      console.log("scroll");
+      this.$refs.tabContent.scrollTop = 0;
+      this.$nextTick(() => {
+        this.$refs.tabContent.scrollTop = 0;
+      });
+    },
+    selectTab(index) {
+      // eslint-disable-next-line no-console
+      console.log(index);
+      if (this.value == index) {
+        // eslint-disable-next-line no-console
+        console.log("test");
+        this.$refs.tabContent.scrollTop = 0;
+      } else {
+        this.$emit("input", index);
       }
     }
   },

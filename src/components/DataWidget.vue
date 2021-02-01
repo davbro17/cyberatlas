@@ -198,6 +198,8 @@
               v-bind:key="colindex"
             >
               <textarea
+                class="textarea"
+                style="white-space:nowrap;width:auto;border-radius:0px; box-shadow:none; -webkit-box-shadow:none;"
                 :rows="entry.toString().split(/\r\n|\r|\n/).length"
                 :cols="
                   Math.max(
@@ -466,18 +468,12 @@ export default {
 .clickable {
   cursor: pointer;
 }
-v-deep .pagination-previous:focus,
-.pagination-next:focus,
-.pagination-link:focus {
-  border-color: #167df0;
+.table.is-hoverable.is-striped tbody tr:not(.is-selected):hover {
+  background-color: #eef6fc;
 }
-td textarea {
-  background-color: inherit;
-  min-width: 100%;
-  padding: 0.6em 0.75em;
-  border-width: 0px;
-  font-size: 1em;
-  resize: none;
-  vertical-align: middle;
+.table.is-hoverable.is-striped
+  tbody
+  tr:not(.is-selected):hover:nth-child(even) {
+  background-color: #eef6fc;
 }
 </style>

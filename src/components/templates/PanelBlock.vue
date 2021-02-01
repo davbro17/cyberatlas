@@ -67,25 +67,6 @@ export default {
   },
   mounted() {
     this.isOpen = this.Open;
-  },
+  }
 };
 </script>
-<style scoped>
-.panel-heading.pointer {
-  cursor: pointer;
-}
-.panel-heading > .level {
-  height: 35px;
-}
-.panel-heading {
-  padding: 0.25em 0.75em;
-}
-.panel-body {
-  border: 1px solid #dbdbdb;
-  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
-    0 0 0 1px rgba(10, 10, 10, 0.02);
-  padding: 0.5em 0.75em;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-</style>

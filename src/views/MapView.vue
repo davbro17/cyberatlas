@@ -129,8 +129,8 @@ export default {
         defaults: options,
         tracker: {},
         layout: defaultLayout,
-        openWithOptions: ["Editor", "Interact"],
-        selected: "Editor"
+        openWithOptions: ["Draw", "Interact"],
+        selected: "Draw"
       },
       data: {
         sheets: [],

@@ -23,6 +23,7 @@
     <button
       class="button is-text"
       @click="$refs.colorInput.click()"
+      style="color:black; border-width:2px"
       :style="[
         selected === 'none'
           ? { 'border-color': 'none' }

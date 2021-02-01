@@ -132,5 +132,11 @@ export default {
   position: relative;
   top: 0;
   margin: auto;
+  overflow: auto;
+}
+@media (prefers-color-scheme: dark) {
+  .graph_container {
+    background-color: #414040;
+  }
 }
 </style>
